@@ -65,7 +65,9 @@ function gitignoreGlobs(root: string): string[] {
 function configIgnoredGlobs(root: string): string[] {
   const configFilesExclude = Object.assign(
     [],
-    vscode.workspace.getConfiguration("advancedNewFile").get("exclude"),
+    vscode.workspace
+      .getConfiguration("createVueTsComponentFolder")
+      .get("exclude"),
     vscode.workspace.getConfiguration("files.exclude", vscode.Uri.file(root))
   );
   const configIgnored = Object.keys(configFilesExclude).filter(
@@ -100,7 +102,7 @@ function convenienceOptions(
   cache: Cache
 ): vscode.QuickPickItem[] {
   const config: string[] = vscode.workspace
-    .getConfiguration("advancedNewFile")
+    .getConfiguration("createVueTsComponentFolder")
     .get("convenienceOptions");
 
   const optionsByName = {
@@ -210,31 +212,49 @@ export function createFileOrFolder(absolutePath: string): void {
   }
 }
 
-export function createComponentFiles(componentPath: string): void {
-  const componentName = path.basename(componentPath);
-  const tsComponentPath = `${componentPath}${path.sep}${componentName}.ts`;
-  const vueComponentPath = `${componentPath}${path.sep}${componentName}.vue`;
+export function createComponentFiles(componentFolderPath: string): void {
+  const componentName = path.basename(componentFolderPath);
+  const componentFilePath = `${componentFolderPath}${path.sep}${componentName}`;
 
-  if (!fs.existsSync(componentPath)) {
-    mkdirp.sync(componentPath);
+  const tsComponentPath = `${componentFilePath}.ts`;
+  const vueComponentPath = `${componentFilePath}.vue`;
+  const scssComponentPath = `${componentFilePath}.scss`;
+
+  const createSCSSFile = vscode.workspace
+    .getConfiguration("createVueTsComponentFolder")
+    .get("createSCSSFile", true);
+
+  if (!fs.existsSync(componentFolderPath)) {
+    mkdirp.sync(componentFolderPath);
     fs.appendFileSync(tsComponentPath, getTSFileContent(componentName));
-    fs.appendFileSync(vueComponentPath, getVueFileContent(componentName));
-    openFile(tsComponentPath);
+    fs.appendFileSync(
+      vueComponentPath,
+      getVueFileContent(componentName, createSCSSFile)
+    );
+
+    if (createSCSSFile) fs.appendFileSync(scssComponentPath, "");
+    openFile(vueComponentPath);
   }
 }
 
 export function getTSFileContent(componentName: string): string {
-  return `import { Component, Vue } from 'vue-property-decorator';\n\n@Component\nexport default class ${componentName} extends Vue {\n\n}\n`;
+  return `import { Component, Vue } from "vue-property-decorator";\n\n@Component\nexport default class ${componentName} extends Vue {\n\n}\n`;
 }
 
-export function getVueFileContent(componentName: string): string {
-  return `<template>\n\t<div></div>\n</template>\n\n<script lang='ts' src=${componentName}.ts />\n`;
+export function getVueFileContent(
+  componentName: string,
+  createSCSSFile: boolean
+): string {
+  let fileContent = `<template>\n\t<div></div>\n</template>\n\n<script lang="ts" src="./${componentName}.ts" />\n`;
+  if (createSCSSFile)
+    fileContent = `${fileContent}<style lang="scss" src="./${componentName}.scss" />\n`;
+  return fileContent;
 }
 
 export async function openFile(absolutePath: string): Promise<void> {
   if (isFolderDescriptor(absolutePath)) {
     const showInformationMessages = vscode.workspace
-      .getConfiguration("advancedNewFile")
+      .getConfiguration("createVueTsComponentFolder")
       .get("showInformationMessages", true);
 
     if (showInformationMessages) {
@@ -414,7 +434,7 @@ export async function command(context: vscode.ExtensionContext) {
 
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand(
-    "extension.createVueComponent",
+    "extension.createVueTsComponentFolder",
     () => command(context)
   );
 
