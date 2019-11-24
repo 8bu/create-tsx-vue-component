@@ -1,4 +1,4 @@
-# Advanced New Component
+# Create Vue/TypeScript Component Folder
 
 Quickly create folder with .ts, .vue and .scss files.
 Based on AdvancedNewFile plugin.
@@ -7,7 +7,7 @@ Based on AdvancedNewFile plugin.
 
 ## Usage
 
-Command palette: "Advanced New Component"
+Command palette: "Create Vue/TypeScript Component Folder"
 
 ## Configuration Example
 
