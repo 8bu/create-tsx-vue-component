@@ -1,8 +1,9 @@
 {
   "name": "create-vuets-component-folder",
-  "displayName": "create-vuets-component-folder",
+  "displayName": "Create Vue/TypeScript Component Folder",
   "description": "Create component anywhere in your workspace from the keyboard. (Vue/TypeScript)",
   "version": "1.0.0",
+  "icon": "icon.png",
   "publisher": "Anqo",
   "engines": {
     "vscode": "^1.17.0"

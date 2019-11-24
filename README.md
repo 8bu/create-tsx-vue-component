@@ -3,7 +3,7 @@
 Quickly create folder with .ts, .vue and .scss files.
 Based on AdvancedNewFile plugin.
 
-![Demo](https://media.giphy.com/media/dXuMQhjg9NYoAPVhFe/giphy.gif)
+![Demo](https://media.giphy.com/media/S3PjgAvPspwJH4IVAd/giphy.gif)
 
 ## Usage
 
