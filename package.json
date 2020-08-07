@@ -1,10 +1,10 @@
 {
   "name": "create-vuets-component-folder",
-  "displayName": "Create Vue/TypeScript Component Folder",
-  "description": "Create component anywhere in your workspace from the keyboard. (Vue/TypeScript)",
+  "displayName": "Create Vue/TSX Component Folder",
+  "description": "Create component anywhere in your workspace from the keyboard. (Vue/TSX)",
   "version": "1.0.0",
   "icon": "icon.png",
-  "publisher": "Anqo",
+  "publisher": "8bu",
   "engines": {
     "vscode": "^1.17.0"
   },
@@ -17,21 +17,21 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.createVueTsComponentFolder"
+    "onCommand:extension.createVueTsxComponentFolder"
   ],
   "main": "./out/src/extension",
   "contributes": {
     "commands": [
       {
-        "command": "extension.createVueTsComponentFolder",
-        "title": "Create Vue/TypeScript Component Folder"
+        "command": "extension.createVueTsxComponentFolder",
+        "title": "Create Vue/TSX Component Folder"
       }
     ],
     "configuration": {
       "type": "object",
-      "title": "createVueTsComponentFolder configuration",
+      "title": "createVueTsxComponentFolder configuration",
       "properties": {
-        "createVueTsComponentFolder.exclude": {
+        "createVueTsxComponentFolder.exclude": {
           "type": [
             "object",
             "null"
@@ -42,12 +42,12 @@
           "default": null,
           "description": "Directories to ignore in auto-complete"
         },
-        "createVueTsComponentFolder.showInformationMessages": {
+        "createVueTsxComponentFolder.showInformationMessages": {
           "type": "boolean",
           "default": true,
           "description": "Control whether top-bar notifications display"
         },
-        "createVueTsComponentFolder.convenienceOptions": {
+        "createVueTsxComponentFolder.convenienceOptions": {
           "type": "array",
           "default": [
             "current",
@@ -56,7 +56,7 @@
           ],
           "description": "Convenience options display at the top of the list. Control which ones you see and in what order."
         },
-        "createVueTsComponentFolder.createSCSSFile": {
+        "createVueTsxComponentFolder.createSCSSFile": {
           "type": "boolean",
           "default": true,
           "description": "Control whether a style file should be created"

@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
 import * as mkdirp from "mkdirp";
-import { compact, startsWith, sortBy } from "lodash";
+import { compact, startsWith, sortBy, kebabCase } from "lodash";
 import * as gitignoreToGlob from "gitignore-to-glob";
 import { sync as globSync } from "glob";
 import * as Cache from "vscode-cache";
@@ -66,7 +66,7 @@ function configIgnoredGlobs(root: string): string[] {
   const configFilesExclude = Object.assign(
     [],
     vscode.workspace
-      .getConfiguration("createVueTsComponentFolder")
+      .getConfiguration("createVueTsxComponentFolder")
       .get("exclude"),
     vscode.workspace.getConfiguration("files.exclude", vscode.Uri.file(root))
   );
@@ -102,7 +102,7 @@ function convenienceOptions(
   cache: Cache
 ): vscode.QuickPickItem[] {
   const config: string[] = vscode.workspace
-    .getConfiguration("createVueTsComponentFolder")
+    .getConfiguration("createVueTsxComponentFolder")
     .get("convenienceOptions");
 
   const optionsByName = {
@@ -214,47 +214,51 @@ export function createFileOrFolder(absolutePath: string): void {
 
 export function createComponentFiles(componentFolderPath: string): void {
   const componentName = path.basename(componentFolderPath);
-  const componentFilePath = `${componentFolderPath}${path.sep}${componentName}`;
+  // const componentFilePath = `${componentFolderPath}${path.sep}${componentName}`;
+  const componentFilePath = `${componentFolderPath}${path.sep}index`;
 
-  const tsComponentPath = `${componentFilePath}.ts`;
-  const vueComponentPath = `${componentFilePath}.vue`;
+  const tsxComponentPath = `${componentFilePath}.tsx`;
   const scssComponentPath = `${componentFilePath}.scss`;
 
   const createSCSSFile = vscode.workspace
-    .getConfiguration("createVueTsComponentFolder")
+    .getConfiguration("createVueTsxComponentFolder")
     .get("createSCSSFile", true);
 
   if (!fs.existsSync(componentFolderPath)) {
     mkdirp.sync(componentFolderPath);
-    fs.appendFileSync(tsComponentPath, getTSFileContent(componentName));
+    // fs.appendFileSync(tsxComponentPath, getTSFileContent(componentName));
     fs.appendFileSync(
-      vueComponentPath,
-      getVueFileContent(componentName, createSCSSFile)
+      tsxComponentPath,
+      getTsxFileContent(componentName, createSCSSFile)
     );
 
     if (createSCSSFile) fs.appendFileSync(scssComponentPath, "");
-    openFile(vueComponentPath);
+    openFile(tsxComponentPath);
   }
 }
 
-export function getTSFileContent(componentName: string): string {
-  return `import { Component, Vue } from "vue-property-decorator";\n\n@Component\nexport default class ${componentName} extends Vue {\n\n}\n`;
-}
+// export function getTSFileContent(componentName: string): string {
+//   return `import { Component, Vue } from "vue-property-decorator";\n\n@Component\nexport default class ${componentName} extends Vue {\n\n}\n`;
+// }
 
-export function getVueFileContent(
+export function getTsxFileContent(
   componentName: string,
   createSCSSFile: boolean
 ): string {
-  let fileContent = `<template>\n\t<div></div>\n</template>\n\n<script lang="ts" src="./${componentName}.ts" />\n`;
-  if (createSCSSFile)
-    fileContent = `${fileContent}<style lang="scss" src="./${componentName}.scss" />\n`;
-  return fileContent;
+  const importContent = `import { Component, Vue } from \"vue-property-decorator\";\n\n`
+  let cssContent = '';
+  if (createSCSSFile) {
+    cssContent = `import './index.scss'\n\n`;
+  }
+  const mainContent = `@Component({\n  name: \"${kebabCase(componentName)}\"\n})\nexport default class ${componentName} extends Vue {\n  protected render() {\n    return (\n      <section>\n        ${componentName}\n      <\/section>\n    )\n  }\n}\n`;
+
+  return `${importContent}${cssContent}${mainContent}`;
 }
 
 export async function openFile(absolutePath: string): Promise<void> {
   if (isFolderDescriptor(absolutePath)) {
     const showInformationMessages = vscode.workspace
-      .getConfiguration("createVueTsComponentFolder")
+      .getConfiguration("createVueTsxComponentFolder")
       .get("showInformationMessages", true);
 
     if (showInformationMessages) {
@@ -434,7 +438,7 @@ export async function command(context: vscode.ExtensionContext) {
 
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand(
-    "extension.createVueTsComponentFolder",
+    "extension.createVueTsxComponentFolder",
     () => command(context)
   );
 

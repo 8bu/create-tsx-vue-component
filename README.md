@@ -1,7 +1,7 @@
-# Create Vue/TypeScript Component Folder
+# Create Vue/TSX Component Folder
 
-Quickly create folder with .ts, .vue and .scss files.
-Based on AdvancedNewFile plugin.
+Quickly create folder with .tsx and .scss files.
+Based on [Create Vue/TypeScript Component Folder](https://github.com/ohanqo/create-vuets-component-folder) plugin.
 
 ![Demo](https://media.giphy.com/media/S3PjgAvPspwJH4IVAd/giphy.gif)
 
@@ -12,15 +12,15 @@ Command palette: "Create Vue/TypeScript Component Folder"
 ## Configuration Example
 
 ```
-"createVueTsComponentFolder.createSCSSFile": true,
-"createVueTsComponentFolder.exclude": {
+"createVueTsxComponentFolder.createSCSSFile": true,
+"createVueTsxComponentFolder.exclude": {
   "node_modules": true,
   "node_modules_electron": true,
   "dev": true,
   "dist": true
 },
-"createVueTsComponentFolder.showInformationMessages": true,
-"createVueTsComponentFolder.convenienceOptions": ["current", "last", "root"]
+"createVueTsxComponentFolder.showInformationMessages": true,
+"createVueTsxComponentFolder.convenienceOptions": ["current", "last", "root"]
 ```
 
 ## Contributing
