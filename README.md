@@ -3,7 +3,7 @@
 Quickly create folder with .tsx and .scss files.
 Based on [Create Vue/TypeScript Component Folder](https://github.com/ohanqo/create-vuets-component-folder) plugin.
 
-Demo: __N/A__
+Demo: ![Demo](https://media.giphy.com/media/THyeNZMf4DK6zO8Abb/giphy.gif)
 
 ## Usage
 
