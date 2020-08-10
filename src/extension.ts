@@ -248,9 +248,9 @@ export function getTsxFileContent(
   const importContent = `import { Component, Vue } from \"vue-property-decorator\";\n\n`
   let cssContent = '';
   if (createSCSSFile) {
-    cssContent = `import './index.scss'\n\n`;
+    cssContent = `import './index.scss';\n\n`;
   }
-  const mainContent = `@Component({\n  name: \"${kebabCase(componentName)}\"\n})\nexport default class ${componentName} extends Vue {\n  protected render() {\n    return (\n      <section>\n        ${componentName}\n      <\/section>\n    )\n  }\n}\n`;
+  const mainContent = `@Component({\n  name: \'${kebabCase(componentName)}\',\n})\nexport default class ${componentName} extends Vue {\n  protected render() {\n    return (\n      <section>\n        ${componentName}\n      <\/section>\n    )\n  }\n}\n`;
 
   return `${importContent}${cssContent}${mainContent}`;
 }
